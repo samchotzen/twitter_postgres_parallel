@@ -6,6 +6,9 @@ echo '==========================================================================
 echo 'load pg_denormalized'
 echo '================================================================================'
 # FIXME: implement this
+#for file in $(find data); do
+#    time sh load_denormalized.sh $file
+#done
 echo "$files" | time parallel sh load_denormalized.sh
 
 echo '================================================================================'
