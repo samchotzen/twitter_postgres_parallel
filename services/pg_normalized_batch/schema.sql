@@ -4,11 +4,6 @@ CREATE EXTENSION postgis;
 
 BEGIN;
 
--- CREATE TABLE urls (
---     id_urls BIGSERIAL PRIMARY KEY,
---     url TEXT UNIQUE
--- );
-
 /*
  * Users may be partially hydrated with only a name/screen_name 
  * if they are first encountered during a quote/reply/mention 
@@ -30,7 +25,7 @@ CREATE TABLE users (
     location TEXT,
     description TEXT,
     withheld_in_countries VARCHAR(2)[],
-    FOREIGN KEY (id_urls) REFERENCES urls(id_urls) DEFERRABLE INITIALLY DEFERRED
+    -- FOREIGN KEY (id_urls) REFERENCES urls(id_urls) DEFERRABLE INITIALLY DEFERRED
 );
 
 /*
@@ -55,8 +50,8 @@ CREATE TABLE tweets (
     lang TEXT,
     place_name TEXT,
     geo geometry,
-    FOREIGN KEY (id_users) REFERENCES users(id_users) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (in_reply_to_user_id) REFERENCES users(id_users) DEFERRABLE INITIALLY DEFERRED
+    -- FOREIGN KEY (id_users) REFERENCES users(id_users) DEFERRABLE INITIALLY DEFERRED,
+    -- FOREIGN KEY (in_reply_to_user_id) REFERENCES users(id_users) DEFERRABLE INITIALLY DEFERRED
 
     -- NOTE:
     -- We do not have the following foreign keys because they would require us
