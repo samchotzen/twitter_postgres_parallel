@@ -37,34 +37,6 @@ def remove_nulls(s):
     else:
         return s.replace('\x00','\\x00')
 
-
-# def get_id_urls(url):
-#     '''
-#     Given a url, returns the corresponding id in the urls table.
-#     If no row exists for the url, then one is inserted automatically.
-#     '''
-#     sql = sqlalchemy.sql.text('''
-#     insert into urls 
-#         (url)
-#         values
-#         (:url)
-#     on conflict do nothing
-#     returning id_urls
-#     ;
-#     ''')
-#     res = connection.execute(sql,{'url':url}).first()
-#     if res is None:
-#         sql = sqlalchemy.sql.text('''
-#         select id_urls 
-#         from urls
-#         where
-#             url=:url
-#         ''')
-#         res = connection.execute(sql,{'url':url}).first()
-#     id_urls = res[0]
-#     return id_urls
-
-
 def batch(iterable, n=1):
     '''
     Group an iterable into batches of size n.
@@ -81,7 +53,6 @@ def batch(iterable, n=1):
     l = len(iterable)
     for ndx in range(0, l, n):
         yield iterable[ndx:min(ndx + n, l)]
-
 
 def _bulk_insert_sql(table, rows):
     '''
@@ -138,10 +109,8 @@ def _bulk_insert_sql(table, rows):
         '''
         )
 
-
     binds = { key+str(i):value for i,row in enumerate(rows) for key,value in row.items() }
     return (' '.join(sql.split()), binds)
-
 
 def bulk_insert(connection, table, rows):
     '''
@@ -155,11 +124,9 @@ def bulk_insert(connection, table, rows):
     sql, binds = _bulk_insert_sql(table, rows)
     res = connection.execute(sqlalchemy.sql.text(sql), binds)
 
-
 ################################################################################
 # main functions
 ################################################################################
-
 
 def insert_tweets(connection, tweets, batch_size=1000):
     '''
@@ -173,7 +140,6 @@ def insert_tweets(connection, tweets, batch_size=1000):
     for i,tweet_batch in enumerate(batch(tweets, batch_size)):
         print(datetime.datetime.now(),'insert_tweets i=',i)
         _insert_tweets(connection, tweet_batch)
-
 
 def _insert_tweets(connection,input_tweets):
     '''
@@ -423,7 +389,6 @@ def _insert_tweets(connection,input_tweets):
         '''
         )
     res = connection.execute(sql, { key+str(i):value for i,tweet in enumerate(tweets) for key,value in tweet.items() })
-
 
 if __name__ == '__main__':
 
